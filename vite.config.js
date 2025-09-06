@@ -15,13 +15,12 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    sourcemap: true,
-    minify: 'terser',
+    sourcemap: false,
+    minify: 'esbuild',
     rollupOptions: {
+      external: ['fsevents'],
       output: {
-        manualChunks: {
-          vendor: ['vite']
-        }
+        manualChunks: undefined
       }
     }
   },
