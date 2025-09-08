@@ -13,6 +13,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
+                <img src="logo.png" alt="Cesar'Phone Logo" class="logo-img">
                 <h2>Cesar'Phone</h2>
             </div>
             <ul class="nav-menu">
@@ -51,9 +52,101 @@
                 </div>
             </div>
             <div class="hero-image">
-                <div class="phone-mockup">
-                    <div class="phone-screen">
-                        <div class="crack-effect"></div>
+                <div class="phone-repair-container">
+                    <div class="phone-mockup">
+                        <div class="phone-frame">
+                            <div class="phone-screen">
+                                <div class="screen-content">
+                                    <div class="crack-overlay"></div>
+                                    <div class="repair-elements">
+                                        <!-- Indicateurs de statut -->
+                                        <div class="repair-indicators">
+                                            <div class="indicator"></div>
+                                            <div class="indicator"></div>
+                                            <div class="indicator"></div>
+                                        </div>
+                                        
+                                        <!-- Outils de réparation -->
+                                        <div class="repair-tools">
+                                            <div class="tool" data-tool="screwdriver">
+                                                <i class="fas fa-screwdriver"></i>
+                                            </div>
+                                            <div class="tool" data-tool="battery">
+                                                <i class="fas fa-battery-half"></i>
+                                            </div>
+                                            <div class="tool" data-tool="screen">
+                                                <i class="fas fa-mobile-alt"></i>
+                                            </div>
+                                            <div class="tool" data-tool="camera">
+                                                <i class="fas fa-camera"></i>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Pièces de rechange -->
+                                        <div class="repair-parts">
+                                            <div class="part screen-part" data-part="screen"></div>
+                                            <div class="part battery-part" data-part="battery"></div>
+                                            <div class="part camera-part" data-part="camera"></div>
+                                        </div>
+                                        
+                                        
+                                        <!-- Barre de progression -->
+                                        <div class="repair-progress">
+                                            <div class="progress-dot"></div>
+                                            <div class="progress-dot"></div>
+                                            <div class="progress-dot"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="repair-info">
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <span>30 min</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Garantie</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Prix fixe</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Localisation -->
+    <section class="location">
+        <div class="container">
+            <div class="location-content">
+                <div class="location-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="location-text">
+                    <h2>Vous me trouverez au <span class="highlight">Centre Culturel Leclerc</span> !</h2>
+                    <p class="location-message">
+                        Parfait ! Vous pouvez faire vos courses ET réparer votre téléphone au même endroit ! 
+                        <br>Après avoir cassé votre écran en faisant tomber votre téléphone dans le caddie, 
+                        <br>vous n'aurez qu'à faire quelques pas pour que je le répare pendant que vous finissez vos emplettes ! 🛒📱
+                    </p>
+                    <div class="location-details">
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Centre Culturel Leclerc</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Même horaires que le magasin</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-parking"></i>
+                            <span>Parking gratuit</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,54 +160,63 @@
                 <h2 class="section-title">Nos Services</h2>
                 <p class="section-description">Des réparations de qualité pour tous vos appareils</p>
             </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-mobile-alt"></i>
+            <div class="services-carousel">
+                <div class="carousel-container">
+                    <div class="carousel-track">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3>Écran cassé</h3>
+                            <p>Remplacement d'écran pour iPhone, Samsung, Huawei et autres marques. Réparation rapide en 30 minutes.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-battery-half"></i>
+                            </div>
+                            <h3>Batterie défaillante</h3>
+                            <p>Remplacement de batterie pour restaurer l'autonomie de votre téléphone. Garantie 6 mois.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                            <h3>Problème audio</h3>
+                            <p>Réparation des haut-parleurs, microphones et connecteurs audio. Diagnostic gratuit.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <h3>Caméra défectueuse</h3>
+                            <p>Remplacement de caméra arrière et frontale. Photos nettes garanties.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <h3>Port de charge</h3>
+                            <p>Réparation du port de charge et problèmes de connectivité. Test immédiat.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-water"></i>
+                            </div>
+                            <h3>Dégâts des eaux</h3>
+                            <p>Récupération d'urgence pour téléphones tombés dans l'eau. Service express disponible.</p>
+                        </div>
                     </div>
-                    <h3>Écran cassé</h3>
-                    <p>Remplacement d'écran pour iPhone, Samsung, Huawei et autres marques. Réparation rapide en 30 minutes.</p>
-                    <div class="service-price">À partir de 49€</div>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-battery-half"></i>
-                    </div>
-                    <h3>Batterie défaillante</h3>
-                    <p>Remplacement de batterie pour restaurer l'autonomie de votre téléphone. Garantie 6 mois.</p>
-                    <div class="service-price">À partir de 39€</div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" aria-label="Service précédent">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next-btn" aria-label="Service suivant">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-microphone"></i>
-                    </div>
-                    <h3>Problème audio</h3>
-                    <p>Réparation des haut-parleurs, microphones et connecteurs audio. Diagnostic gratuit.</p>
-                    <div class="service-price">À partir de 29€</div>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-camera"></i>
-                    </div>
-                    <h3>Caméra défectueuse</h3>
-                    <p>Remplacement de caméra arrière et frontale. Photos nettes garanties.</p>
-                    <div class="service-price">À partir de 59€</div>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3>Port de charge</h3>
-                    <p>Réparation du port de charge et problèmes de connectivité. Test immédiat.</p>
-                    <div class="service-price">À partir de 35€</div>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-water"></i>
-                    </div>
-                    <h3>Dégâts des eaux</h3>
-                    <p>Récupération d'urgence pour téléphones tombés dans l'eau. Service express disponible.</p>
-                    <div class="service-price">À partir de 69€</div>
+                <div class="carousel-dots">
+                    <!-- Les dots seront générés dynamiquement par JavaScript -->
                 </div>
             </div>
         </div>
@@ -167,7 +269,7 @@
                 </div>
                 <div class="about-stats">
                     <div class="stat">
-                        <div class="stat-number">5000+</div>
+                        <div class="stat-number">100+</div>
                         <div class="stat-label">Téléphones réparés</div>
                     </div>
                     <div class="stat">
@@ -257,6 +359,69 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Envoyer le message</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Centre Culturel -->
+    <section class="cultural-center">
+        <div class="container">
+            <div class="center-card">
+                <div class="center-header">
+                    <h2>Centre Culturel <span class="highlight">Leclerc</span></h2>
+                    <p>Un lieu unique où culture et technologie se rencontrent</p>
+                </div>
+                
+                <div class="center-services">
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="service-info">
+                            <h3>Librairie</h3>
+                            <p>Des milliers de livres pour tous les goûts</p>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="service-info">
+                            <h3>Médiathèque</h3>
+                            <p>Films, séries et documentaires</p>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div class="service-info">
+                            <h3>Musique</h3>
+                            <p>CD, vinyles et partitions</p>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item featured">
+                        <div class="service-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="service-info">
+                            <h3>Cesar'Phone</h3>
+                            <p>Réparation de téléphones</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="center-description">
+                    <p>Venez découvrir ce lieu culturel unique où vous pouvez faire vos courses, emprunter des livres, 
+                    regarder des films, écouter de la musique... et réparer votre téléphone !</p>
+                </div>
+                
+                <div class="center-cta">
+                    <a href="#contact" class="btn btn-primary">Nous rendre visite</a>
                 </div>
             </div>
         </div>

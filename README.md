@@ -14,7 +14,7 @@ Site web moderne et responsive pour Cesar'Phone, service de réparation de tél�
 ## 🎨 Design
 
 Le site respecte l'identité visuelle du logo Cesar'Phone :
-- **Bleu royal** (#1A4B9F) - Couleur principale
+- **Bleu royal** (#1A4A79) - Couleur principale
 - **Jaune doré** (#FFD700) - Couleur d'accent
 - **Gris foncé** (#333333) - Texte et éléments secondaires
 
@@ -108,3 +108,4 @@ Pour toute question concernant le site :
 ## 📄 Licence
 
 © 2024 Cesar'Phone. Tous droits réservés.
+
