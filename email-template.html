@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle demande de réparation - Cesar'Phone</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .email-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a4a79 0%, #2c5aa0 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #1a4a79;
+        }
+        
+        .info-section h3 {
+            margin: 0 0 15px 0;
+            color: #1a4a79;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-section h3 i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .info-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .info-item strong {
+            color: #1a4a79;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-item span {
+            color: #495057;
+            font-size: 16px;
+        }
+        
+        .service-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        
+        .message-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .message-section h3 {
+            margin: 0 0 10px 0;
+            color: #856404;
+            font-size: 16px;
+        }
+        
+        .message-content {
+            color: #856404;
+            font-style: italic;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        .contact-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        
+        .contact-info h4 {
+            margin: 0 0 10px 0;
+            color: #1a4a79;
+            font-size: 16px;
+        }
+        
+        .contact-info p {
+            margin: 5px 0;
+            color: #495057;
+        }
+        
+        .priority-high {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            margin: 15px 0;
+        }
+        
+        .priority-normal {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            margin: 15px 0;
+        }
+        
+        @media (max-width: 600px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- En-tête -->
+        <div class="header">
+            <h1>📱 Cesar'Phone</h1>
+            <p>Nouvelle demande de réparation</p>
+        </div>
+        
+        <!-- Contenu principal -->
+        <div class="content">
+            <!-- Informations client -->
+            <div class="info-section">
+                <h3><i>👤</i> Informations du client</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Nom</strong>
+                        <span>{{from_name}}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Email</strong>
+                        <span>{{from_email}}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Téléphone</strong>
+                        <span>{{phone}}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Date</strong>
+                        <span>{{date}}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service demandé -->
+            <div class="info-section">
+                <h3><i>🔧</i> Service demandé</h3>
+                <div class="service-badge">{{service}}</div>
+            </div>
+            
+            <!-- Message du client -->
+            <div class="message-section">
+                <h3>💬 Message du client</h3>
+                <div class="message-content">
+                    {{message}}
+                </div>
+            </div>
+            
+            <!-- Priorité -->
+            <div class="priority-normal">
+                ⚡ Demande normale - Réponse recommandée sous 24h
+            </div>
+            
+            <!-- Informations de contact -->
+            <div class="contact-info">
+                <h4>📞 Informations de contact</h4>
+                <p><strong>Email client :</strong> {{from_email}}</p>
+                <p><strong>Téléphone :</strong> {{phone}}</p>
+                <p><strong>Service :</strong> {{service}}</p>
+            </div>
+            
+            <!-- Actions recommandées -->
+            <div class="info-section">
+                <h3><i>✅</i> Actions recommandées</h3>
+                <ul style="color: #495057; line-height: 1.8;">
+                    <li>Contacter le client dans les 24h</li>
+                    <li>Proposer un devis si nécessaire</li>
+                    <li>Confirmer la disponibilité pour la réparation</li>
+                    <li>Donner rendez-vous au E.Leclerc La Souterraine</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Pied de page -->
+        <div class="footer">
+            <p><strong>Cesar'Phone</strong> - Réparation de téléphones professionnelle</p>
+            <p>📍 E.Leclerc LA SOUTERRAINE, Av. Jean Jaurès, 23300 La Souterraine</p>
+            <p>📞 07 74 82 16 59 | ✉️ Cesarphone23@gmail.com</p>
+            <p>🕒 Lundi et Samedi : 14h30 - 18h</p>
+            <p style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
+                SIRET : 94066516900014
+            </p>
+        </div>
+    </div>
+</body>
+</html>

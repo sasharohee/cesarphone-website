@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Animation d'apparition des éléments au scroll
+// Animation d'apparition des éléments au scroll avec effet stagger
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -88,16 +88,50 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('loaded');
+            
+            // Animation stagger pour les cartes de services
+            if (entry.target.classList.contains('service-card')) {
+                const cards = document.querySelectorAll('.service-card');
+                const index = Array.from(cards).indexOf(entry.target);
+                setTimeout(() => {
+                    entry.target.classList.add('animate-in');
+                }, index * 100);
+            }
+            
+            // Animation stagger pour les features
+            if (entry.target.classList.contains('feature')) {
+                const features = document.querySelectorAll('.feature');
+                const index = Array.from(features).indexOf(entry.target);
+                setTimeout(() => {
+                    entry.target.classList.add('animate-in');
+                }, index * 150);
+            }
+            
+            // Animation stagger pour les contact items
+            if (entry.target.classList.contains('contact-item')) {
+                const items = document.querySelectorAll('.contact-item');
+                const index = Array.from(items).indexOf(entry.target);
+                setTimeout(() => {
+                    entry.target.classList.add('animate-in');
+                }, index * 100);
+            }
         }
     });
 }, observerOptions);
 
 // Observer les éléments à animer
 document.addEventListener('DOMContentLoaded', () => {
-    const elementsToAnimate = document.querySelectorAll('.service-card, .feature, .contact-item, .stat');
+    const elementsToAnimate = document.querySelectorAll('.service-card, .feature, .contact-item, .stat, .section-header, .location-content, .center-card, .footer, .repair-info');
     elementsToAnimate.forEach(el => {
         el.classList.add('loading');
         observer.observe(el);
+    });
+    
+    // Animation des sections
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.classList.add('loading');
+        observer.observe(section);
     });
 });
 
@@ -139,35 +173,205 @@ document.addEventListener('DOMContentLoaded', () => {
     stats.forEach(stat => statsObserver.observe(stat));
 });
 
-// Gestion du formulaire de contact
+// Configuration EmailJS
+const EMAILJS_CONFIG = {
+    serviceId: 'service_x2rloaf',
+    templateId: 'template_dsz8cw1',
+    publicKey: 'OE2JV_06PnF8-QQM4'
+};
+
+// Initialiser EmailJS
+(function() {
+    emailjs.init(EMAILJS_CONFIG.publicKey);
+})();
+
+// Gestion du formulaire de contact avec EmailJS
 const contactForm = document.querySelector('.contact-form form');
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
         
         // Récupérer les données du formulaire
         const formData = new FormData(contactForm);
         const data = Object.fromEntries(formData);
         
-        // Simulation d'envoi (remplacer par vraie logique)
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
+        // Validation des champs requis
+        if (!data.name || !data.email || !data.service) {
+            showMessage('Veuillez remplir tous les champs obligatoires.', 'error');
+            return;
+        }
         
+        // Validation de l'email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(data.email)) {
+            showMessage('Veuillez entrer une adresse email valide.', 'error');
+            return;
+        }
+        
+        // Changer l'état du bouton
         submitBtn.textContent = 'Envoi en cours...';
         submitBtn.disabled = true;
+        submitBtn.style.background = 'linear-gradient(135deg, #6c757d 0%, #495057 100%)';
         
-        setTimeout(() => {
-            submitBtn.textContent = 'Message envoyé !';
-            submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+        try {
+            // Préparer les paramètres pour EmailJS
+            const templateParams = {
+                from_name: data.name,
+                from_email: data.email,
+                phone: data.phone || 'Non renseigné',
+                service: getServiceName(data.service),
+                message: data.message || 'Aucun message supplémentaire',
+                to_email: 'Cesarphone23@gmail.com',
+                date: new Date().toLocaleDateString('fr-FR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            };
             
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                submitBtn.style.background = '';
+            // Envoyer l'email via EmailJS
+            const response = await emailjs.send(
+                EMAILJS_CONFIG.serviceId,
+                EMAILJS_CONFIG.templateId,
+                templateParams
+            );
+            
+            if (response.status === 200) {
+                // Message de confirmation détaillé pour le client
+                const confirmationMessage = `
+                    ✅ Message envoyé avec succès !
+                    
+                    Merci ${data.name}, nous avons bien reçu votre demande de réparation pour : ${getServiceName(data.service)}
+                    
+                    📞 Nous vous contacterons dans les 24h au ${data.phone || data.email}
+                    
+                    📍 Rendez-vous au E.Leclerc La Souterraine
+                    🕒 Lundi et Samedi : 14h30 - 18h
+                    
+                    À bientôt chez Cesar'Phone !
+                `;
+                
+                showMessage(confirmationMessage, 'success');
                 contactForm.reset();
-            }, 2000);
-        }, 1500);
+                
+                // Optionnel : Scroll vers le message de confirmation
+                setTimeout(() => {
+                    const messageElement = document.querySelector('.form-message');
+                    if (messageElement) {
+                        messageElement.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                    }
+                }, 100);
+                
+            } else {
+                throw new Error('Erreur lors de l\'envoi');
+            }
+            
+        } catch (error) {
+            console.error('Erreur EmailJS:', error);
+            showMessage('Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou nous contacter directement.', 'error');
+        } finally {
+            // Restaurer le bouton
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            submitBtn.style.background = '';
+        }
     });
+}
+
+// Fonction pour obtenir le nom du service
+function getServiceName(serviceValue) {
+    const services = {
+        'ecran': 'Écran cassé',
+        'batterie': 'Batterie défaillante',
+        'audio': 'Problème audio',
+        'camera': 'Caméra défectueuse',
+        'charge': 'Port de charge',
+        'eau': 'Dégâts des eaux',
+        'autre': 'Autre problème'
+    };
+    return services[serviceValue] || serviceValue;
+}
+
+// Fonction pour afficher les messages
+function showMessage(message, type = 'info') {
+    // Supprimer les messages existants
+    const existingMessage = document.querySelector('.form-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    // Créer le nouveau message
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `form-message form-message-${type}`;
+    
+    // Gérer les messages multi-lignes
+    if (message.includes('\n') || message.includes('  ')) {
+        // Convertir les retours à la ligne en <br> et nettoyer les espaces
+        const formattedMessage = message
+            .trim()
+            .split('\n')
+            .map(line => line.trim())
+            .filter(line => line.length > 0)
+            .join('<br>');
+        messageDiv.innerHTML = formattedMessage;
+    } else {
+        messageDiv.textContent = message;
+    }
+    
+    // Styles pour le message
+    messageDiv.style.cssText = `
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 12px;
+        font-weight: 500;
+        text-align: center;
+        transition: all 0.3s ease;
+        line-height: 1.6;
+        font-size: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        ${type === 'success' ? 
+            'background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white;' :
+            type === 'error' ?
+            'background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white;' :
+            'background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); color: white;'
+        }
+    `;
+    
+    // Insérer le message après le formulaire
+    const form = document.querySelector('.contact-form form');
+    form.appendChild(messageDiv);
+    
+    // Animation d'apparition
+    messageDiv.style.opacity = '0';
+    messageDiv.style.transform = 'translateY(-20px) scale(0.95)';
+    
+    setTimeout(() => {
+        messageDiv.style.opacity = '1';
+        messageDiv.style.transform = 'translateY(0) scale(1)';
+    }, 100);
+    
+    // Supprimer le message après 8 secondes pour les messages de succès (plus longs)
+    const timeoutDuration = type === 'success' ? 8000 : 5000;
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
+            messageDiv.style.opacity = '0';
+            messageDiv.style.transform = 'translateY(-20px) scale(0.95)';
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 300);
+        }
+    }, timeoutDuration);
 }
 
 // Animation de typing pour le titre principal
@@ -197,55 +401,159 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Effet parallaxe léger pour la section hero et animation du logo
+// Effet parallaxe amélioré et animations au scroll
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const heroImage = document.querySelector('.phone-mockup');
     const logo = document.querySelector('.logo-img');
+    const heroContent = document.querySelector('.hero-content');
+    const locationIcon = document.querySelector('.location-icon');
     
+    // Parallaxe pour l'image du téléphone
     if (heroImage) {
-        const rate = scrolled * -0.3;
-        heroImage.style.transform = `translateY(${rate}px)`;
+        const rate = scrolled * -0.2;
+        heroImage.style.transform = `translateY(${rate}px) rotate(${scrolled * 0.01}deg)`;
+    }
+    
+    // Animation du contenu hero
+    if (heroContent) {
+        const rate = scrolled * 0.1;
+        heroContent.style.transform = `translateY(${rate}px)`;
     }
     
     // Animation du logo au scroll
     if (logo) {
         if (scrolled > 100) {
-            logo.style.transform = 'scale(0.9)';
+            logo.style.transform = 'scale(0.9) rotate(5deg)';
             logo.style.filter = 'drop-shadow(0 2px 4px rgba(26, 74, 121, 0.15))';
         } else {
-            logo.style.transform = 'scale(1)';
+            logo.style.transform = 'scale(1) rotate(0deg)';
             logo.style.filter = 'drop-shadow(0 2px 4px rgba(26, 74, 121, 0.1))';
         }
     }
+    
+    // Animation de l'icône de localisation
+    if (locationIcon) {
+        const rate = scrolled * 0.05;
+        locationIcon.style.transform = `translateY(${rate}px) rotate(${scrolled * 0.02}deg)`;
+    }
+    
+    // Animation des sections au scroll
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isVisible) {
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
+        }
+    });
 });
 
-// Animation des cartes de services au hover
+// Animation des cartes de services au hover avec effets avancés
 document.addEventListener('DOMContentLoaded', () => {
     const serviceCards = document.querySelectorAll('.service-card');
     
     serviceCards.forEach(card => {
+        const icon = card.querySelector('.service-icon');
+        const title = card.querySelector('h3');
+        const description = card.querySelector('p');
+        
         card.addEventListener('mouseenter', () => {
             card.style.transform = 'translateY(-10px) scale(1.02)';
+            card.style.boxShadow = '0 20px 40px rgba(26, 74, 121, 0.2)';
+            
+            if (icon) {
+                icon.style.transform = 'scale(1.1) rotate(5deg)';
+                icon.style.boxShadow = '0 0 20px rgba(26, 74, 121, 0.4)';
+            }
+            
+            if (title) {
+                title.style.color = 'var(--primary-blue)';
+                title.style.transform = 'translateY(-2px)';
+            }
+            
+            if (description) {
+                description.style.transform = 'translateY(-1px)';
+            }
         });
         
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'translateY(0) scale(1)';
+            card.style.boxShadow = '';
+            
+            if (icon) {
+                icon.style.transform = 'scale(1) rotate(0deg)';
+                icon.style.boxShadow = '';
+            }
+            
+            if (title) {
+                title.style.color = '';
+                title.style.transform = 'translateY(0)';
+            }
+            
+            if (description) {
+                description.style.transform = 'translateY(0)';
+            }
+        });
+        
+        // Effet de clic
+        card.addEventListener('click', () => {
+            card.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => {
+                card.style.animation = '';
+            }, 500);
         });
     });
 });
 
-// Animation des boutons
+// Animation des boutons avec effets avancés
 document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.btn');
     
     buttons.forEach(btn => {
         btn.addEventListener('mouseenter', () => {
-            btn.style.transform = 'translateY(-2px)';
+            btn.style.transform = 'translateY(-3px) scale(1.05)';
+            btn.style.boxShadow = '0 10px 25px rgba(26, 74, 121, 0.3)';
         });
         
         btn.addEventListener('mouseleave', () => {
-            btn.style.transform = 'translateY(0)';
+            btn.style.transform = 'translateY(0) scale(1)';
+            btn.style.boxShadow = '';
+        });
+        
+        btn.addEventListener('click', () => {
+            btn.style.animation = 'pulse 0.3s ease-in-out';
+            setTimeout(() => {
+                btn.style.animation = '';
+            }, 300);
+        });
+    });
+    
+    // Animation des liens de navigation
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            link.style.transform = 'translateY(-2px) scale(1.05)';
+        });
+        
+        link.addEventListener('mouseleave', () => {
+            link.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    // Animation des icônes de contact
+    const contactIcons = document.querySelectorAll('.contact-icon, .feature-icon, .service-icon');
+    contactIcons.forEach(icon => {
+        icon.addEventListener('mouseenter', () => {
+            icon.style.transform = 'scale(1.1) rotate(5deg)';
+            icon.style.boxShadow = '0 0 20px rgba(26, 74, 121, 0.4)';
+        });
+        
+        icon.addEventListener('mouseleave', () => {
+            icon.style.transform = 'scale(1) rotate(0deg)';
+            icon.style.boxShadow = '';
         });
     });
 });
@@ -284,11 +592,11 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Activer les particules
+
+// Activer les animations
 document.addEventListener('DOMContentLoaded', () => {
     createParticles();
     initRepairAnimations();
-    initServicesCarousel();
 });
 
 // Animations des éléments de réparation
@@ -364,7 +672,7 @@ function initRepairAnimations() {
         }, 1200 + (index * 100));
     });
     
-    // Animation des infos
+    // Animation des infos avec disparition
     infoItems.forEach((item, index) => {
         setTimeout(() => {
             item.style.opacity = '0';
@@ -377,6 +685,37 @@ function initRepairAnimations() {
             }, 200);
         }, 1500 + (index * 200));
     });
+    
+    // Animation de disparition et réapparition des infos
+    function cycleInfoItems() {
+        // Disparition après 5 secondes
+        setTimeout(() => {
+            infoItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(-20px) scale(0.8)';
+                    item.style.transition = 'all 0.8s ease';
+                }, index * 100);
+            });
+            
+            // Réapparition après 3 secondes de disparition
+            setTimeout(() => {
+                infoItems.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0) scale(1)';
+                        item.style.transition = 'all 0.6s ease';
+                    }, index * 100);
+                });
+            }, 3000);
+        }, 5000);
+    }
+    
+    // Démarrer le cycle
+    cycleInfoItems();
+    
+    // Répéter le cycle toutes les 12 secondes
+    setInterval(cycleInfoItems, 12000);
     
     // Effet de réparation en cours
     setInterval(() => {
@@ -480,221 +819,5 @@ const debouncedScrollHandler = debounce(() => {
 
 window.addEventListener('scroll', debouncedScrollHandler);
 
-// Carrousel de services
-function initServicesCarousel() {
-    const carouselTrack = document.querySelector('.carousel-track');
-    const prevBtn = document.querySelector('.prev-btn');
-    const nextBtn = document.querySelector('.next-btn');
-    const serviceCards = document.querySelectorAll('.service-card');
-    
-    if (!carouselTrack || !prevBtn || !nextBtn) return;
-    
-    let currentSlide = 0;
-    let totalSlides = 0;
-    let autoSlideInterval;
-    
-    function getCardsPerSlide() {
-        if (window.innerWidth <= 480) return 1;
-        if (window.innerWidth <= 768) return 2;
-        return 3;
-    }
-    
-    function calculateTotalSlides() {
-        const cardsPerSlide = getCardsPerSlide();
-        totalSlides = Math.ceil(serviceCards.length / cardsPerSlide);
-        generateDots();
-        return totalSlides;
-    }
-    
-    function generateDots() {
-        const dotsContainer = document.querySelector('.carousel-dots');
-        dotsContainer.innerHTML = '';
-        
-        for (let i = 0; i < totalSlides; i++) {
-            const dot = document.createElement('span');
-            dot.className = 'dot';
-            if (i === 0) dot.classList.add('active');
-            dot.setAttribute('data-slide', i);
-            dotsContainer.appendChild(dot);
-        }
-        
-        // Re-attacher les event listeners aux nouveaux dots
-        attachDotListeners();
-    }
-    
-    function attachDotListeners() {
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                goToSlide(index);
-                stopAutoSlide();
-                startAutoSlide();
-            });
-        });
-    }
-    
-    function updateCarousel() {
-        const cardsPerSlide = getCardsPerSlide();
-        const slideWidth = 100 / cardsPerSlide;
-        const translateX = -(currentSlide * slideWidth);
-        carouselTrack.style.transform = `translateX(${translateX}%)`;
-        
-        // Mettre à jour les dots
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentSlide);
-        });
-        
-        // Les boutons restent toujours actifs pour navigation circulaire
-        prevBtn.disabled = false;
-        nextBtn.disabled = false;
-        
-        console.log(`Slide ${currentSlide + 1}/${totalSlides}, Cards per slide: ${cardsPerSlide}, TranslateX: ${translateX}%`);
-        console.log(`Cartes visibles: ${currentSlide * cardsPerSlide + 1} à ${Math.min((currentSlide + 1) * cardsPerSlide, serviceCards.length)}`);
-        
-        // Afficher les noms des cartes visibles
-        const startIndex = currentSlide * cardsPerSlide;
-        const endIndex = Math.min(startIndex + cardsPerSlide, serviceCards.length);
-        const visibleCards = Array.from(serviceCards).slice(startIndex, endIndex).map(card => card.querySelector('h3').textContent);
-        console.log(`Services visibles: ${visibleCards.join(', ')}`);
-        
-        // Vérifier si "Dégâts des eaux" est visible
-        if (visibleCards.includes('Dégâts des eaux')) {
-            console.log('✅ Dégâts des eaux est visible !');
-        } else {
-            console.log('❌ Dégâts des eaux n\'est pas visible');
-        }
-    }
-    
-    function nextSlide() {
-        if (currentSlide < totalSlides - 1) {
-            currentSlide++;
-            updateCarousel();
-        } else {
-            // Retour au début si on est à la fin
-            currentSlide = 0;
-            updateCarousel();
-        }
-    }
-    
-    function prevSlide() {
-        if (currentSlide > 0) {
-            currentSlide--;
-            updateCarousel();
-        } else {
-            // Aller à la fin si on est au début
-            currentSlide = totalSlides - 1;
-            updateCarousel();
-        }
-    }
-    
-    function goToSlide(slideIndex) {
-        if (slideIndex >= 0 && slideIndex < totalSlides) {
-            currentSlide = slideIndex;
-            updateCarousel();
-        }
-    }
-    
-    function startAutoSlide() {
-        autoSlideInterval = setInterval(() => {
-            nextSlide();
-        }, 5000);
-    }
-    
-    function stopAutoSlide() {
-        clearInterval(autoSlideInterval);
-    }
-    
-    // Event listeners
-    nextBtn.addEventListener('click', () => {
-        nextSlide();
-        stopAutoSlide();
-        startAutoSlide();
-    });
-    
-    prevBtn.addEventListener('click', () => {
-        prevSlide();
-        stopAutoSlide();
-        startAutoSlide();
-    });
-    
-    // Les event listeners des dots sont maintenant gérés par attachDotListeners()
-    
-    // Navigation au clavier
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') {
-            prevSlide();
-            stopAutoSlide();
-            startAutoSlide();
-        } else if (e.key === 'ArrowRight') {
-            nextSlide();
-            stopAutoSlide();
-            startAutoSlide();
-        }
-    });
-    
-    // Pause sur hover
-    const carousel = document.querySelector('.services-carousel');
-    if (carousel) {
-        carousel.addEventListener('mouseenter', stopAutoSlide);
-        carousel.addEventListener('mouseleave', startAutoSlide);
-    }
-    
-    // Gestion du redimensionnement
-    window.addEventListener('resize', () => {
-        const newTotalSlides = calculateTotalSlides();
-        if (currentSlide >= newTotalSlides) {
-            currentSlide = newTotalSlides - 1;
-        }
-        updateCarousel();
-    });
-    
-    // Touch/swipe support pour mobile
-    let startX = 0;
-    let endX = 0;
-    
-    carouselTrack.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-    });
-    
-    carouselTrack.addEventListener('touchend', (e) => {
-        endX = e.changedTouches[0].clientX;
-        handleSwipe();
-    });
-    
-    function handleSwipe() {
-        const swipeThreshold = 50;
-        const diff = startX - endX;
-        
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                nextSlide();
-            } else {
-                prevSlide();
-            }
-            stopAutoSlide();
-            startAutoSlide();
-        }
-    }
-    
-    // Initialisation
-    console.log(`Nombre de cartes détectées: ${serviceCards.length}`);
-    calculateTotalSlides();
-    updateCarousel();
-    startAutoSlide();
-    
-    // Test: Forcer l'affichage de toutes les slides
-    setTimeout(() => {
-        console.log('Test: Passage à la slide 2');
-        currentSlide = 1;
-        updateCarousel();
-    }, 2000);
-    
-    setTimeout(() => {
-        console.log('Test: Retour à la slide 1');
-        currentSlide = 0;
-        updateCarousel();
-    }, 4000);
-    
-}
+// Les services sont maintenant affichés en grille statique, plus besoin de carrousel
 
