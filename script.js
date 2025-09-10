@@ -401,57 +401,85 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Effet parallaxe amélioré et animations au scroll
-window.addEventListener('scroll', () => {
+// Détection mobile
+const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// Effet parallaxe optimisé pour mobile
+function handleScroll() {
     const scrolled = window.pageYOffset;
     const heroImage = document.querySelector('.phone-mockup');
     const logo = document.querySelector('.logo-img');
     const heroContent = document.querySelector('.hero-content');
     const locationIcon = document.querySelector('.location-icon');
     
-    // Parallaxe pour l'image du téléphone
+    // Parallaxe réduite sur mobile
     if (heroImage) {
-        const rate = scrolled * -0.2;
-        heroImage.style.transform = `translateY(${rate}px) rotate(${scrolled * 0.01}deg)`;
+        if (isMobile) {
+            // Animation très réduite sur mobile
+            const rate = scrolled * -0.05;
+            heroImage.style.transform = `translate3d(0, ${rate}px, 0)`;
+        } else {
+            const rate = scrolled * -0.2;
+            heroImage.style.transform = `translate3d(0, ${rate}px, 0) rotate(${scrolled * 0.01}deg)`;
+        }
     }
     
-    // Animation du contenu hero
-    if (heroContent) {
+    // Animation du contenu hero (désactivée sur mobile)
+    if (heroContent && !isMobile) {
         const rate = scrolled * 0.1;
-        heroContent.style.transform = `translateY(${rate}px)`;
+        heroContent.style.transform = `translate3d(0, ${rate}px, 0)`;
     }
     
-    // Animation du logo au scroll
+    // Animation du logo au scroll (simplifiée sur mobile)
     if (logo) {
         if (scrolled > 100) {
-            logo.style.transform = 'scale(0.9) rotate(5deg)';
-            logo.style.filter = 'drop-shadow(0 2px 4px rgba(26, 74, 121, 0.15))';
+            if (isMobile) {
+                logo.style.transform = 'scale(0.95)';
+            } else {
+                logo.style.transform = 'scale(0.9) rotate(5deg)';
+                logo.style.filter = 'drop-shadow(0 2px 4px rgba(26, 74, 121, 0.15))';
+            }
         } else {
-            logo.style.transform = 'scale(1) rotate(0deg)';
-            logo.style.filter = 'drop-shadow(0 2px 4px rgba(26, 74, 121, 0.1))';
+            logo.style.transform = 'scale(1)';
+            if (!isMobile) {
+                logo.style.filter = 'drop-shadow(0 2px 4px rgba(26, 74, 121, 0.1))';
+            }
         }
     }
     
-    // Animation de l'icône de localisation
-    if (locationIcon) {
+    // Animation de l'icône de localisation (désactivée sur mobile)
+    if (locationIcon && !isMobile) {
         const rate = scrolled * 0.05;
-        locationIcon.style.transform = `translateY(${rate}px) rotate(${scrolled * 0.02}deg)`;
+        locationIcon.style.transform = `translate3d(0, ${rate}px, 0) rotate(${scrolled * 0.02}deg)`;
     }
     
-    // Animation des sections au scroll
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-        
-        if (isVisible) {
-            section.style.opacity = '1';
-            section.style.transform = 'translateY(0)';
-        }
-    });
+    // Animation des sections au scroll (simplifiée sur mobile)
+    if (!isMobile) {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+            
+            if (isVisible) {
+                section.style.opacity = '1';
+                section.style.transform = 'translate3d(0, 0, 0)';
+            }
+        });
+    }
+}
+
+// Debounce optimisé pour mobile
+const scrollDelay = isMobile ? 50 : 10;
+let scrollTimeout;
+
+window.addEventListener('scroll', () => {
+    if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+    }
+    scrollTimeout = setTimeout(handleScroll, scrollDelay);
 });
 
-// Animation des cartes de services au hover avec effets avancés
+// Animation des cartes de services au hover avec effets avancés (optimisées pour mobile)
 document.addEventListener('DOMContentLoaded', () => {
     const serviceCards = document.querySelectorAll('.service-card');
     
@@ -460,108 +488,139 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = card.querySelector('h3');
         const description = card.querySelector('p');
         
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-10px) scale(1.02)';
-            card.style.boxShadow = '0 20px 40px rgba(26, 74, 121, 0.2)';
+        // Désactiver les effets hover sur mobile
+        if (!isMobile) {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translate3d(0, -10px, 0) scale(1.02)';
+                card.style.boxShadow = '0 20px 40px rgba(26, 74, 121, 0.2)';
+                
+                if (icon) {
+                    icon.style.transform = 'scale(1.1) rotate(5deg)';
+                    icon.style.boxShadow = '0 0 20px rgba(26, 74, 121, 0.4)';
+                }
+                
+                if (title) {
+                    title.style.color = 'var(--primary-blue)';
+                    title.style.transform = 'translate3d(0, -2px, 0)';
+                }
+                
+                if (description) {
+                    description.style.transform = 'translate3d(0, -1px, 0)';
+                }
+            });
             
-            if (icon) {
-                icon.style.transform = 'scale(1.1) rotate(5deg)';
-                icon.style.boxShadow = '0 0 20px rgba(26, 74, 121, 0.4)';
-            }
-            
-            if (title) {
-                title.style.color = 'var(--primary-blue)';
-                title.style.transform = 'translateY(-2px)';
-            }
-            
-            if (description) {
-                description.style.transform = 'translateY(-1px)';
-            }
-        });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translate3d(0, 0, 0) scale(1)';
+                card.style.boxShadow = '';
+                
+                if (icon) {
+                    icon.style.transform = 'scale(1) rotate(0deg)';
+                    icon.style.boxShadow = '';
+                }
+                
+                if (title) {
+                    title.style.color = '';
+                    title.style.transform = 'translate3d(0, 0, 0)';
+                }
+                
+                if (description) {
+                    description.style.transform = 'translate3d(0, 0, 0)';
+                }
+            });
+        }
         
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0) scale(1)';
-            card.style.boxShadow = '';
-            
-            if (icon) {
-                icon.style.transform = 'scale(1) rotate(0deg)';
-                icon.style.boxShadow = '';
-            }
-            
-            if (title) {
-                title.style.color = '';
-                title.style.transform = 'translateY(0)';
-            }
-            
-            if (description) {
-                description.style.transform = 'translateY(0)';
-            }
-        });
-        
-        // Effet de clic
+        // Effet de clic simplifié sur mobile
         card.addEventListener('click', () => {
-            card.style.animation = 'shake 0.5s ease-in-out';
-            setTimeout(() => {
-                card.style.animation = '';
-            }, 500);
+            if (isMobile) {
+                // Animation simple sur mobile
+                card.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1)';
+                }, 150);
+            } else {
+                card.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    card.style.animation = '';
+                }, 500);
+            }
         });
     });
 });
 
-// Animation des boutons avec effets avancés
+// Animation des boutons avec effets avancés (optimisées pour mobile)
 document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.btn');
     
     buttons.forEach(btn => {
-        btn.addEventListener('mouseenter', () => {
-            btn.style.transform = 'translateY(-3px) scale(1.05)';
-            btn.style.boxShadow = '0 10px 25px rgba(26, 74, 121, 0.3)';
-        });
-        
-        btn.addEventListener('mouseleave', () => {
-            btn.style.transform = 'translateY(0) scale(1)';
-            btn.style.boxShadow = '';
-        });
+        // Désactiver les effets hover sur mobile
+        if (!isMobile) {
+            btn.addEventListener('mouseenter', () => {
+                btn.style.transform = 'translate3d(0, -3px, 0) scale(1.05)';
+                btn.style.boxShadow = '0 10px 25px rgba(26, 74, 121, 0.3)';
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate3d(0, 0, 0) scale(1)';
+                btn.style.boxShadow = '';
+            });
+        }
         
         btn.addEventListener('click', () => {
-            btn.style.animation = 'pulse 0.3s ease-in-out';
-            setTimeout(() => {
-                btn.style.animation = '';
-            }, 300);
+            if (isMobile) {
+                // Animation simple sur mobile
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                }, 150);
+            } else {
+                btn.style.animation = 'pulse 0.3s ease-in-out';
+                setTimeout(() => {
+                    btn.style.animation = '';
+                }, 300);
+            }
         });
     });
     
-    // Animation des liens de navigation
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('mouseenter', () => {
-            link.style.transform = 'translateY(-2px) scale(1.05)';
+    // Animation des liens de navigation (désactivée sur mobile)
+    if (!isMobile) {
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                link.style.transform = 'translate3d(0, -2px, 0) scale(1.05)';
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = 'translate3d(0, 0, 0) scale(1)';
+            });
         });
-        
-        link.addEventListener('mouseleave', () => {
-            link.style.transform = 'translateY(0) scale(1)';
-        });
-    });
+    }
     
-    // Animation des icônes de contact
-    const contactIcons = document.querySelectorAll('.contact-icon, .feature-icon, .service-icon');
-    contactIcons.forEach(icon => {
-        icon.addEventListener('mouseenter', () => {
-            icon.style.transform = 'scale(1.1) rotate(5deg)';
-            icon.style.boxShadow = '0 0 20px rgba(26, 74, 121, 0.4)';
+    // Animation des icônes de contact (désactivée sur mobile)
+    if (!isMobile) {
+        const contactIcons = document.querySelectorAll('.contact-icon, .feature-icon, .service-icon');
+        contactIcons.forEach(icon => {
+            icon.addEventListener('mouseenter', () => {
+                icon.style.transform = 'scale(1.1) rotate(5deg)';
+                icon.style.boxShadow = '0 0 20px rgba(26, 74, 121, 0.4)';
+            });
+            
+            icon.addEventListener('mouseleave', () => {
+                icon.style.transform = 'scale(1) rotate(0deg)';
+                icon.style.boxShadow = '';
+            });
         });
-        
-        icon.addEventListener('mouseleave', () => {
-            icon.style.transform = 'scale(1) rotate(0deg)';
-            icon.style.boxShadow = '';
-        });
-    });
+    }
 });
 
-// Effet de particules pour la section hero (optionnel)
+// Effet de particules pour la section hero (désactivé sur mobile)
 function createParticles() {
+    // Désactiver les particules sur mobile pour améliorer les performances
+    if (isMobile) {
+        return;
+    }
+    
     const hero = document.querySelector('.hero');
-    const particleCount = 20;
+    const particleCount = 15; // Réduit de 20 à 15
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
@@ -577,6 +636,8 @@ function createParticles() {
             top: ${Math.random() * 100}%;
             animation: float ${3 + Math.random() * 4}s ease-in-out infinite;
             animation-delay: ${Math.random() * 2}s;
+            will-change: transform;
+            transform: translateZ(0);
         `;
         hero.appendChild(particle);
     }
@@ -599,13 +660,44 @@ document.addEventListener('DOMContentLoaded', () => {
     initRepairAnimations();
 });
 
-// Animations des éléments de réparation
+// Animations des éléments de réparation (optimisées pour mobile)
 function initRepairAnimations() {
     const tools = document.querySelectorAll('.tool');
     const parts = document.querySelectorAll('.part');
     const infoItems = document.querySelectorAll('.info-item');
     const indicators = document.querySelectorAll('.indicator');
     const progressDots = document.querySelectorAll('.progress-dot');
+    
+    // Désactiver les animations complexes sur mobile
+    if (isMobile) {
+        // Animation simple et statique sur mobile
+        tools.forEach((tool, index) => {
+            tool.style.opacity = '1';
+            tool.style.transform = 'translate3d(0, 0, 0)';
+        });
+        
+        parts.forEach((part, index) => {
+            part.style.opacity = '1';
+            part.style.transform = 'translate3d(0, 0, 0)';
+        });
+        
+        indicators.forEach((indicator, index) => {
+            indicator.style.opacity = '1';
+            indicator.style.transform = 'translate3d(0, 0, 0)';
+        });
+        
+        progressDots.forEach((dot, index) => {
+            dot.style.opacity = '1';
+            dot.style.transform = 'translate3d(0, 0, 0)';
+        });
+        
+        infoItems.forEach((item, index) => {
+            item.style.opacity = '1';
+            item.style.transform = 'translate3d(0, 0, 0)';
+        });
+        
+        return; // Sortir de la fonction sur mobile
+    }
     
     // Animation des indicateurs
     indicators.forEach((indicator, index) => {
@@ -799,7 +891,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Optimisation: Debounce pour les événements de scroll
+// Optimisation: Debounce pour les événements de scroll (optimisé pour mobile)
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -812,12 +904,25 @@ function debounce(func, wait) {
     };
 }
 
-// Appliquer le debounce aux événements de scroll
+// Appliquer le debounce aux événements de scroll avec délai adaptatif
+const scrollDebounceDelay = isMobile ? 100 : 16; // 60fps sur desktop, ~10fps sur mobile
 const debouncedScrollHandler = debounce(() => {
     // Logique de scroll optimisée
-}, 10);
+}, scrollDebounceDelay);
 
-window.addEventListener('scroll', debouncedScrollHandler);
+// Utiliser requestAnimationFrame pour une meilleure performance
+let ticking = false;
+function optimizedScrollHandler() {
+    if (!ticking) {
+        requestAnimationFrame(() => {
+            debouncedScrollHandler();
+            ticking = false;
+        });
+        ticking = true;
+    }
+}
+
+window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
 
 // Les services sont maintenant affichés en grille statique, plus besoin de carrousel
 

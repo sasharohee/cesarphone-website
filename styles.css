@@ -28,6 +28,9 @@ body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 .container {
@@ -349,6 +352,9 @@ body {
     width: 280px;
     height: 560px;
     margin: 0 auto;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .phone-frame {
@@ -433,6 +439,8 @@ body {
     right: 0;
     bottom: 0;
     z-index: 10;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .repair-tools {
@@ -460,6 +468,8 @@ body {
     border: 2px solid var(--white);
     cursor: pointer;
     transition: all 0.3s ease;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .tool:hover {
@@ -491,6 +501,8 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: all 0.3s ease;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .part:hover {
@@ -1299,6 +1311,54 @@ body {
 .footer-bottom p:last-child {
     font-weight: 500;
     color: var(--accent-yellow);
+}
+
+/* Optimisations pour mobile - Réduction des animations */
+@media (max-width: 768px) {
+    /* Désactiver les animations complexes sur mobile */
+    .tool {
+        animation: none;
+    }
+    
+    .part {
+        animation: none;
+    }
+    
+    .progress-dot {
+        animation: none;
+    }
+    
+    .indicator {
+        animation: none;
+    }
+    
+    /* Réduire les effets de hover sur mobile */
+    .tool:hover,
+    .part:hover {
+        transform: none;
+    }
+    
+    /* Optimiser les transitions */
+    .phone-mockup,
+    .repair-elements,
+    .tool,
+    .part {
+        transition: none;
+    }
+    
+    /* Désactiver les animations CSS complexes sur mobile */
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    /* Garder seulement les animations essentielles */
+    .btn,
+    .nav-link,
+    .service-card {
+        transition: transform 0.2s ease !important;
+    }
 }
 
 /* Responsive Design */
