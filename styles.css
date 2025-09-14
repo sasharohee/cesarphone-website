@@ -2277,3 +2277,364 @@ section.animate-in {
     transform: translateY(0);
 }
 
+/* Styles pour la section partenariat Leclerc */
+.leclerc-partnership {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.leclerc-partnership::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23FFD700" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%231A4A79" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%23FFD700" opacity="0.05"/><circle cx="10" cy="50" r="0.5" fill="%231A4A79" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.partnership-content {
+    position: relative;
+    z-index: 2;
+}
+
+.partnership-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.partnership-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gradient-accent);
+    color: var(--primary-blue);
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-medium);
+}
+
+.partnership-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.partnership-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.partnership-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.partnership-card {
+    background: var(--white);
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.partnership-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-accent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.partnership-card:hover::before {
+    transform: scaleX(1);
+}
+
+.partnership-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--shadow-heavy);
+    border-color: var(--accent-yellow);
+}
+
+.partnership-card .card-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--white);
+    transition: all 0.4s ease;
+}
+
+.partnership-card:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0 30px rgba(26, 74, 121, 0.4);
+}
+
+.partnership-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--primary-blue);
+}
+
+.partnership-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.partnership-card strong {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.partnership-cta {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.partnership-cta .btn {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.partnership-cta .btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(26, 74, 121, 0.3);
+}
+
+/* Styles pour la carte Leclerc */
+.leclerc-center {
+    background: linear-gradient(135deg, #1A4A79 0%, #2E5CB8 100%);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.leclerc-center::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="leclerc-pattern" width="50" height="50" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="2" fill="%23FFD700" opacity="0.1"/><circle cx="10" cy="10" r="1" fill="%23FFD700" opacity="0.05"/><circle cx="40" cy="40" r="1" fill="%23FFD700" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23leclerc-pattern)"/></svg>');
+    opacity: 0.2;
+    z-index: 1;
+}
+
+.leclerc-center .center-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 50px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.leclerc-center .center-header h2 {
+    color: var(--primary-blue);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.leclerc-center .center-header p {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.leclerc-center .center-hours {
+    background: var(--gradient-accent);
+    color: var(--primary-blue);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    display: inline-block;
+}
+
+.leclerc-center .center-hours h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.leclerc-center .center-services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.leclerc-center .service-item {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.leclerc-center .service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--accent-yellow);
+}
+
+.leclerc-center .service-item.featured {
+    background: var(--gradient-accent);
+    color: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.leclerc-center .service-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--white);
+}
+
+.leclerc-center .service-item.featured .service-icon {
+    background: var(--primary-blue);
+}
+
+.leclerc-center .service-info h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--primary-blue);
+}
+
+.leclerc-center .service-item.featured .service-info h3 {
+    color: var(--primary-blue);
+}
+
+.leclerc-center .service-info p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.leclerc-center .service-item.featured .service-info p {
+    color: var(--primary-blue);
+    font-weight: 500;
+}
+
+.leclerc-center .center-description {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.leclerc-center .center-cta {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.leclerc-center .center-cta .btn {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.leclerc-center .center-cta .btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(26, 74, 121, 0.3);
+}
+
+/* Responsive pour les sections partenariat */
+@media (max-width: 768px) {
+    .partnership-title {
+        font-size: 2.2rem;
+    }
+    
+    .partnership-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .partnership-card {
+        padding: 30px 20px;
+    }
+    
+    .partnership-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .leclerc-center .center-card {
+        padding: 30px 20px;
+    }
+    
+    .leclerc-center .center-header h2 {
+        font-size: 2rem;
+    }
+    
+    .leclerc-center .center-services {
+        grid-template-columns: 1fr;
+    }
+    
+    .leclerc-center .center-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
