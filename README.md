@@ -1,3 +1,4 @@
+
 # Cesar'Phone - Site Web Professionnel
 
 Site web moderne et responsive pour Cesar'Phone, service de réparation de téléphones professionnel.
@@ -99,13 +100,9 @@ npm i -g vercel
 vercel --prod
 ```
 
-## 📞 Contact
 
-Pour toute question concernant le site :
-- Email : contact@cesarphone.fr
-- Téléphone : 01 23 45 67 89
 
 ## 📄 Licence
 
-© 2024 Cesar'Phone. Tous droits réservés.
+© 2025 Cesar'Phone. Tous droits réservés.
 
