@@ -251,7 +251,7 @@ if (contactForm) {
                     
                     📞 Nous vous contacterons dans les 24h au ${data.phone || data.email}
                     
-                    📍 Rendez-vous au E.Leclerc La Souterraine
+                    📍 Rendez-vous à notre atelier à Maison-Feyne
                     🕒 Lundi et Samedi : 14h30 - 18h
                     
                     À bientôt chez Cesar'Phone !
