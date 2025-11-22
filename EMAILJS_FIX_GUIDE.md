@@ -67,3 +67,4 @@ Après avoir mis à jour le template dans EmailJS :
 - Les variables doivent correspondre exactement entre le JavaScript et le template
 
 
+
