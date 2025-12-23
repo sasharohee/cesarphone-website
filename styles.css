@@ -227,23 +227,47 @@ body {
 
 /* Section Hero */
 .hero {
-    min-height: 100vh;
+    min-height: auto;
     display: flex;
     align-items: flex-start;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 2rem 0 4rem 0;
-    padding-top: calc(80px + 2rem);
+    padding: 2rem 0 0.5rem 0;
+    padding-top: calc(80px + 3rem);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(26, 74, 121, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .hero-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 20px 0.5rem 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
     align-items: center;
     padding-top: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-container:has(.hero-content:only-child) {
+    grid-template-columns: 1fr;
+    max-width: 900px;
+    text-align: center;
 }
 
 .hero-title {
@@ -252,6 +276,23 @@ body {
     line-height: 1.2;
     margin-bottom: 1.5rem;
     color: var(--text-dark);
+    position: relative;
+}
+
+.hero-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--gradient-accent);
+    border-radius: 2px;
+}
+
+.hero-container:has(.hero-content:only-child) .hero-title::after {
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .highlight {
@@ -267,12 +308,70 @@ body {
     color: var(--text-light);
     margin-bottom: 2rem;
     line-height: 1.8;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-buttons {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.hero-container:has(.hero-content:only-child) .hero-buttons {
+    justify-content: center;
+}
+
+/* Badge moderne pour les hero sections */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(26, 74, 121, 0.1);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--primary-blue);
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(26, 74, 121, 0.2);
+}
+
+.hero-badge i {
+    font-size: 0.85rem;
+}
+
+/* Stats modernes pour hero */
+.hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.hero-stat {
+    text-align: center;
+}
+
+.hero-stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    display: block;
+}
+
+.hero-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 4px;
 }
 
 .btn {
@@ -919,6 +1018,7 @@ body {
     transition: all 0.3s ease;
     border: 1px solid var(--light-grey);
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .service-card:hover {
@@ -1660,6 +1760,23 @@ body {
 
     .hero-description {
         font-size: 1rem;
+    }
+
+    .hero-stats {
+        gap: 1rem;
+    }
+
+    .hero-stat-number {
+        font-size: 1.5rem;
+    }
+
+    .hero-stat-label {
+        font-size: 0.8rem;
+    }
+
+    .hero-badge {
+        font-size: 0.85rem;
+        padding: 6px 12px;
     }
 
     .location-title {
