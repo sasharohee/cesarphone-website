@@ -926,3 +926,23 @@ window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
 
 // Les services sont maintenant affichés en grille statique, plus besoin de carrousel
 
+// Mise à jour automatique de l'année dans le copyright
+document.addEventListener('DOMContentLoaded', () => {
+    const currentYear = new Date().getFullYear();
+    
+    // Chercher tous les éléments contenant le copyright dans le footer
+    const copyrightElements = document.querySelectorAll('.footer-bottom p, footer p');
+    copyrightElements.forEach(element => {
+        const text = element.textContent || element.innerText;
+        // Vérifier si l'élément contient le copyright avec "Cesar'Phone"
+        if (text.includes('Cesar\'Phone') || text.includes('©')) {
+            // Remplacer l'année (4 chiffres) par l'année actuelle
+            // Utiliser \b pour s'assurer qu'on remplace uniquement une année complète
+            const updatedText = text.replace(/\b\d{4}\b/, currentYear);
+            if (updatedText !== text) {
+                element.textContent = updatedText;
+            }
+        }
+    });
+});
+
